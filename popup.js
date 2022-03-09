@@ -1,5 +1,6 @@
 var checkparticipants = document.getElementById("activate");
 var deactivate = document.getElementById("deactivate");
+var spanWrite = document.getElementById("writeP")
 
 checkparticipants.addEventListener("click", async()=>{
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -7,17 +8,12 @@ checkparticipants.addEventListener("click", async()=>{
       target: { tabId: tab.id },
       function: checkingParticipants,
   });
-    chrome.storage.local.get("active", ({ active }) => {
-    //spanWrite.innerHTML = active;
-  });
 });
 
 function checkingParticipants() {
     chrome.storage.local.get("active", ({ active }) => {
       if (active == "false"){
-        var spanWrite = document.getElementById("writeP")
-        spanWrite.innerHTML = "Activado"
-        console.log("its on false")
+        console.log("Activating")
         chrome.storage.local.set({ active:"true" });
         setInterval(() => {
           var divParticipants = document.getElementsByClassName("uGOf1d")
@@ -30,10 +26,8 @@ function checkingParticipants() {
           }
         }, 1000);
       }
-
-
-      if (active == "true"){
-        console.log("already active")
+      else if (active == "true"){
+        console.log("Already active")
       }
     });
 }
